@@ -29,6 +29,4 @@
 -(instancetype) init: (NSNumber*)ID
                title: (NSString*)title;
 
--(NSString*) description;
-
 @end
