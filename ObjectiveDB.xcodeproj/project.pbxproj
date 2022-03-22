@@ -14,6 +14,7 @@
 		1B5D549827E8F573002E104C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B5D549727E8F573002E104C /* Assets.xcassets */; };
 		1B5D549B27E8F573002E104C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B5D549927E8F573002E104C /* LaunchScreen.storyboard */; };
 		1B5D549E27E8F573002E104C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D549D27E8F573002E104C /* main.m */; };
+		1B5D54A727E8FB71002E104C /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D54A627E8FB71002E104C /* Movie.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		1B5D549A27E8F573002E104C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1B5D549C27E8F573002E104C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B5D549D27E8F573002E104C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1B5D54A527E8F6FF002E104C /* Movie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
+		1B5D54A627E8FB71002E104C /* Movie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 		1B5D548A27E8F56F002E104C /* ObjectiveDB */ = {
 			isa = PBXGroup;
 			children = (
+				1B5D54A427E8F6E1002E104C /* model */,
 				1B5D548B27E8F56F002E104C /* AppDelegate.h */,
 				1B5D548C27E8F56F002E104C /* AppDelegate.m */,
 				1B5D548E27E8F56F002E104C /* SceneDelegate.h */,
@@ -74,6 +78,15 @@
 				1B5D549D27E8F573002E104C /* main.m */,
 			);
 			path = ObjectiveDB;
+			sourceTree = "<group>";
+		};
+		1B5D54A427E8F6E1002E104C /* model */ = {
+			isa = PBXGroup;
+			children = (
+				1B5D54A527E8F6FF002E104C /* Movie.h */,
+				1B5D54A627E8FB71002E104C /* Movie.m */,
+			);
+			path = model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +161,7 @@
 			files = (
 				1B5D549327E8F56F002E104C /* ViewController.m in Sources */,
 				1B5D548D27E8F56F002E104C /* AppDelegate.m in Sources */,
+				1B5D54A727E8FB71002E104C /* Movie.m in Sources */,
 				1B5D549E27E8F573002E104C /* main.m in Sources */,
 				1B5D549027E8F56F002E104C /* SceneDelegate.m in Sources */,
 			);
