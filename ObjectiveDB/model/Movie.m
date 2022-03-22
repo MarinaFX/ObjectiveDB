@@ -23,7 +23,7 @@
     return self;
 }
 
-- (instancetype) init: (NSNumber*)ID
+- (instancetype) initWithId: (NSNumber*)ID
                 title: (NSString*)title {
     return [self initWithId:ID title:title overview:nil rating:nil];
 }

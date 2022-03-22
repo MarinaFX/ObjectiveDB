@@ -26,7 +26,7 @@
            overview:(NSString*)overview
            rating: (NSNumber*)rating;
 
--(instancetype) init: (NSNumber*)ID
+-(instancetype) initWithId: (NSNumber*)ID
                title: (NSString*)title;
 
 @end
