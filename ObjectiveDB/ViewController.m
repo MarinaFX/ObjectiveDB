@@ -30,7 +30,7 @@
     MovieService *service = [MovieService alloc];
     NSURL *posterURL = [NSURL URLWithString:@"https://image.tmdb.org/t/p/w154/74xTEgt7R36Fpooo50r9T25onhq.jpg"];
     
-    [service performAsyncImageDownloadsWithWithURL:posterURL completionHandler:^(BOOL success, UIImage *image) {
+    [service performAsyncImageDownloadsWithURL:posterURL completionHandler:^(BOOL success, UIImage *image) {
         if (success) {
             self.moviePoster.image = image;
         }
