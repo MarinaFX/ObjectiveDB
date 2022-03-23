@@ -19,7 +19,7 @@
 /*! Completion block to fetch the movie poster*/
 typedef void (^FetchPostercompletionBlock) (BOOL success, UIImage *image);
 
-- (void) performAsyncImageDownloadsWithWithURL: (NSURL*)URL
+- (void) performAsyncImageDownloadsWithURL: (NSURL*)URL
         completionHandler: (FetchPostercompletionBlock)completionBlock;
 
 @end
