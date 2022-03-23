@@ -17,7 +17,7 @@ Fetch a movie poster from the TMDB.
 @param completionBlock The completion block
  
 */
--(void) performAsyncImageDownloadsWithWithURL: (NSString*)URL completionHandler: (FetchPostercompletionBlock)completionBlock {
+-(void) performAsyncImageDownloadsWithURL: (NSString*)URL completionHandler: (FetchPostercompletionBlock)completionBlock {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *formatURL = [NSString stringWithFormat:@"%@", URL];
         NSURL *imagePosterURL = [NSURL URLWithString:formatURL];
