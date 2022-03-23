@@ -15,6 +15,7 @@
 		1B5D549B27E8F573002E104C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B5D549927E8F573002E104C /* LaunchScreen.storyboard */; };
 		1B5D549E27E8F573002E104C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D549D27E8F573002E104C /* main.m */; };
 		1B5D54A727E8FB71002E104C /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D54A627E8FB71002E104C /* Movie.m */; };
+		1B5D54AE27EA423A002E104C /* MovieService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D54AD27EA423A002E104C /* MovieService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		1B5D549D27E8F573002E104C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1B5D54A527E8F6FF002E104C /* Movie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
 		1B5D54A627E8FB71002E104C /* Movie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
+		1B5D54AC27EA4220002E104C /* MovieService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MovieService.h; sourceTree = "<group>"; };
+		1B5D54AD27EA423A002E104C /* MovieService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,8 @@
 			children = (
 				1B5D54A527E8F6FF002E104C /* Movie.h */,
 				1B5D54A627E8FB71002E104C /* Movie.m */,
+				1B5D54AC27EA4220002E104C /* MovieService.h */,
+				1B5D54AD27EA423A002E104C /* MovieService.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -163,6 +168,7 @@
 				1B5D548D27E8F56F002E104C /* AppDelegate.m in Sources */,
 				1B5D54A727E8FB71002E104C /* Movie.m in Sources */,
 				1B5D549E27E8F573002E104C /* main.m in Sources */,
+				1B5D54AE27EA423A002E104C /* MovieService.m in Sources */,
 				1B5D549027E8F56F002E104C /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
