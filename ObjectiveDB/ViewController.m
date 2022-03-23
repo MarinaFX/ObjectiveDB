@@ -8,9 +8,10 @@
 #import "ViewController.h"
 #import "model/Movie.h"
 #import "model/MovieService.h"
+#import "Views/MovieTableCell.h"
 
 @interface ViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *moviePoster;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -20,21 +21,26 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    Movie *movie = [[Movie alloc] initWithId:@1 title:@"flemis" overview:@"flemis overview" rating:@2.2];
-    
-    Movie *movie2 = [[Movie alloc] initWithId:@2 title:@"flemis 2"];
+    [self.tableView setDataSource:self];
+}
 
-    NSLog(@"movie 1 description: %@ \n", [movie description]);
-    NSLog(@"movie 2 description: %@ \n", [movie2 description]);
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 10;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MovieTableCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"MovieTableCell"];
     
-    MovieService *service = [MovieService alloc];
-    NSURL *posterURL = [NSURL URLWithString:@"https://image.tmdb.org/t/p/w154/74xTEgt7R36Fpooo50r9T25onhq.jpg"];
+    if (cell == nil) {
+        cell = (MovieTableCell *)[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MovieTableCell"];
+    }
     
-    [service performAsyncImageDownloadsWithURL:posterURL completionHandler:^(BOOL success, UIImage *image) {
-        if (success) {
-            self.moviePoster.image = image;
-        }
-    }];
+    cell.moviePoster.image = [UIImage imageNamed:@"default"];
+    cell.movieTitleLabel.text = @"Flemis title";
+    cell.movieOverviewLabel.text = @"Flemis overview";
+    cell.movieRatingLabel.text = @"2.2";
+    
+    return cell;
 }
 
 @end
