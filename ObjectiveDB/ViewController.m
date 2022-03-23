@@ -7,7 +7,7 @@
 
 #import "ViewController.h"
 #import "model/Movie.h"
-#import "model/MovieService.h"
+#import "service/MovieService.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *moviePoster;
@@ -28,9 +28,12 @@
     NSLog(@"movie 2 description: %@ \n", [movie2 description]);
     
     MovieService *service = [MovieService alloc];
+    [service performAsyncMoviesDownloadWithType: @"now_playing" completionBlock:^(BOOL success, NSArray *movies) {
+        
+    }];
     NSURL *posterURL = [NSURL URLWithString:@"https://image.tmdb.org/t/p/w154/74xTEgt7R36Fpooo50r9T25onhq.jpg"];
     
-    [service performAsyncImageDownloadsWithURL:posterURL completionHandler:^(BOOL success, UIImage *image) {
+    [service performAsyncImageDownloadWithURL:posterURL completionBlock:^(BOOL success, UIImage *image) {
         if (success) {
             self.moviePoster.image = image;
         }
