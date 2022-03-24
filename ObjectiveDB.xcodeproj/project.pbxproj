@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B45B26327EBE3A700DA5945 /* PresentationTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B45B26227EBE3A700DA5945 /* PresentationTableCell.m */; };
+		1B45B26627EBE53300DA5945 /* MovieDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B45B26527EBE53300DA5945 /* MovieDetailViewController.m */; };
+		1B45B26927EBE65D00DA5945 /* MovieOverviewTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B45B26827EBE65D00DA5945 /* MovieOverviewTableCell.m */; };
 		1B5D548D27E8F56F002E104C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D548C27E8F56F002E104C /* AppDelegate.m */; };
 		1B5D549027E8F56F002E104C /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D548F27E8F56F002E104C /* SceneDelegate.m */; };
 		1B5D549327E8F56F002E104C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5D549227E8F56F002E104C /* ViewController.m */; };
@@ -20,6 +23,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B45B26127EBE37A00DA5945 /* PresentationTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PresentationTableCell.h; sourceTree = "<group>"; };
+		1B45B26227EBE3A700DA5945 /* PresentationTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PresentationTableCell.m; sourceTree = "<group>"; };
+		1B45B26427EBE4F600DA5945 /* MovieDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MovieDetailViewController.h; sourceTree = "<group>"; };
+		1B45B26527EBE53300DA5945 /* MovieDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MovieDetailViewController.m; sourceTree = "<group>"; };
+		1B45B26727EBE62A00DA5945 /* MovieOverviewTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MovieOverviewTableCell.h; sourceTree = "<group>"; };
+		1B45B26827EBE65D00DA5945 /* MovieOverviewTableCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MovieOverviewTableCell.m; sourceTree = "<group>"; };
 		1B5D548827E8F56F002E104C /* ObjectiveDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ObjectiveDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B5D548B27E8F56F002E104C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1B5D548C27E8F56F002E104C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -83,6 +92,8 @@
 				1B5D549927E8F573002E104C /* LaunchScreen.storyboard */,
 				1B5D549C27E8F573002E104C /* Info.plist */,
 				1B5D549D27E8F573002E104C /* main.m */,
+				1B45B26427EBE4F600DA5945 /* MovieDetailViewController.h */,
+				1B45B26527EBE53300DA5945 /* MovieDetailViewController.m */,
 			);
 			path = ObjectiveDB;
 			sourceTree = "<group>";
@@ -103,6 +114,10 @@
 			children = (
 				1BD402FC27EBCD30009D7F08 /* MovieTableCell.h */,
 				1BD402FD27EBCD59009D7F08 /* MovieTableCell.m */,
+				1B45B26127EBE37A00DA5945 /* PresentationTableCell.h */,
+				1B45B26227EBE3A700DA5945 /* PresentationTableCell.m */,
+				1B45B26727EBE62A00DA5945 /* MovieOverviewTableCell.h */,
+				1B45B26827EBE65D00DA5945 /* MovieOverviewTableCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -183,6 +198,9 @@
 				1B5D54A727E8FB71002E104C /* Movie.m in Sources */,
 				1B5D549E27E8F573002E104C /* main.m in Sources */,
 				1B5D54AE27EA423A002E104C /* MovieService.m in Sources */,
+				1B45B26927EBE65D00DA5945 /* MovieOverviewTableCell.m in Sources */,
+				1B45B26627EBE53300DA5945 /* MovieDetailViewController.m in Sources */,
+				1B45B26327EBE3A700DA5945 /* PresentationTableCell.m in Sources */,
 				1B5D549027E8F56F002E104C /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
