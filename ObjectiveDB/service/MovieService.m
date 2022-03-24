@@ -26,14 +26,26 @@
         }
         NSURL *moviesURL = [NSURL URLWithString:formatURL];
         
-        //getting movies JSON
+        //storing movies JSON into an array
         NSData *moviesData = [NSData dataWithContentsOfURL: moviesURL];
-        NSDictionary *moviesDictionary = [NSJSONSerialization JSONObjectWithData: moviesData options: 0 error: NULL];
+        NSDictionary *contentDictionary = [NSJSONSerialization JSONObjectWithData: moviesData options: 0 error: NULL];
+        NSArray *moviesArrayAsJSON = contentDictionary[@"results"];
         
-        for (NSString* key in moviesDictionary) {
-            NSLog(@"%@", moviesDictionary[key]);
+        //creating and filling the array to return the movies
+        NSMutableArray *movies = [[NSMutableArray alloc] init];
+        for (NSDictionary *movie in moviesArrayAsJSON) {
+            Movie *movieObject = [[Movie alloc] init];
+            movieObject.ID = movie[@"id"];
+            movieObject.title = movie[@"title"];
+            movieObject.overview = movie[@"overview"];
+            movieObject.rating = movie[@"vote_average"];
+            movieObject.posterPath = movie[@"poster_path"];
+            [movies addObject: movieObject];
         }
-       
+        //returning the movies
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(YES, movies);
+        });
     });
 }
 

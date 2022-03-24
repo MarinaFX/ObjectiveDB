@@ -19,7 +19,7 @@
 
 
 /*! Completion block to fetch all movies */
-typedef void (^FetchMoviesCompletionBlock) (BOOL success, NSArray *movies);
+typedef void (^FetchMoviesCompletionBlock) (BOOL success, NSMutableArray *movies);
 
 /*! Completion block to fetch the movie poster */
 typedef void (^FetchPosterCompletionBlock) (BOOL success, UIImage *image);
