@@ -44,7 +44,12 @@
         }
         //returning the movies
         dispatch_async(dispatch_get_main_queue(), ^{
-            completionBlock(YES, movies);
+            if (contentDictionary == nil || moviesData == nil || movies.count == 0) {
+                completionBlock(NO, movies);
+            }
+            else {
+                completionBlock(YES, movies);
+            }
         });
     });
 }
