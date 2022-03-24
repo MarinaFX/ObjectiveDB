@@ -67,6 +67,7 @@
 		1B5D548A27E8F56F002E104C /* ObjectiveDB */ = {
 			isa = PBXGroup;
 			children = (
+				4838F54727EB9606008FD5C1 /* service */,
 				1B5D54A427E8F6E1002E104C /* model */,
 				1B5D548B27E8F56F002E104C /* AppDelegate.h */,
 				1B5D548C27E8F56F002E104C /* AppDelegate.m */,
@@ -88,10 +89,17 @@
 			children = (
 				1B5D54A527E8F6FF002E104C /* Movie.h */,
 				1B5D54A627E8FB71002E104C /* Movie.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		4838F54727EB9606008FD5C1 /* service */ = {
+			isa = PBXGroup;
+			children = (
 				1B5D54AC27EA4220002E104C /* MovieService.h */,
 				1B5D54AD27EA423A002E104C /* MovieService.m */,
 			);
-			path = model;
+			path = service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

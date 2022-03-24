@@ -7,7 +7,7 @@
 
 #import "ViewController.h"
 #import "model/Movie.h"
-#import "model/MovieService.h"
+#import "service/MovieService.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *moviePoster;
@@ -20,17 +20,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    Movie *movie = [[Movie alloc] initWithId:@1 title:@"flemis" overview:@"flemis overview" rating:@2.2];
+    Movie *movie = [[Movie alloc] initWithId:@1 title:@"flemis" overview:@"flemis overview" rating:@2.2 posterPath: @"https://image.tmdb.org/t/p/w154/74xTEgt7R36Fpooo50r9T25onhq.jpg"];
     
     Movie *movie2 = [[Movie alloc] initWithId:@2 title:@"flemis 2"];
 
-    NSLog(@"movie 1 description: %@ \n", [movie description]);
-    NSLog(@"movie 2 description: %@ \n", [movie2 description]);
+    //NSLog(@"movie 1 description: %@ \n", [movie description]);
+    //NSLog(@"movie 2 description: %@ \n", [movie2 description]);
     
-    MovieService *service = [MovieService alloc];
+    MovieService *service = [[MovieService alloc] init];
+    [service performAsyncMoviesDownloadWithType: @"now_playing" completionBlock:^(BOOL success, NSMutableArray *movies) {
+        for (Movie *movie in movies) {
+            NSLog(@"%@",movie.title);
+        }
+    }];
     NSURL *posterURL = [NSURL URLWithString:@"https://image.tmdb.org/t/p/w154/74xTEgt7R36Fpooo50r9T25onhq.jpg"];
     
-    [service performAsyncImageDownloadsWithURL:posterURL completionHandler:^(BOOL success, UIImage *image) {
+    [service performAsyncImageDownloadWithURL:posterURL completionBlock:^(BOOL success, UIImage *image) {
         if (success) {
             self.moviePoster.image = image;
         }
