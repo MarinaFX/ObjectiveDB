@@ -19,12 +19,13 @@
 @property (atomic, retain) NSString *title;
 @property (atomic, retain) NSString *overview;
 @property (atomic, retain) NSNumber *rating;
-@property (atomic, retain) UIImage *imageCover;
+@property (atomic, retain) NSString *posterPath;
 
 -(instancetype) initWithId: (NSNumber*)ID
-           title:(NSString*)title
-           overview:(NSString*)overview
-           rating: (NSNumber*)rating;
+            title:(NSString*)title
+            overview:(NSString*)overview
+            rating: (NSNumber*)rating
+            posterPath: (NSString*)posterPath;
 
 -(instancetype) initWithId: (NSNumber*)ID
                title: (NSString*)title;
