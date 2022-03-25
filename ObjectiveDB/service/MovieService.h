@@ -28,7 +28,7 @@ typedef void (^FetchPosterCompletionBlock) (BOOL success, UIImage *image);
 - (void) performAsyncMoviesDownloadWithType: (NSString*)type
         completionBlock: (FetchMoviesCompletionBlock) completionBlock;
 
-- (void) performAsyncImageDownloadWithURL: (NSURL*)URL
+- (void) performAsyncImageDownloadWithURL: (NSString *)URL
         completionBlock: (FetchPosterCompletionBlock) completionBlock;
 
 @end
