@@ -13,10 +13,15 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) NSArray *nowPlayingMovies;
-@property (nonatomic, retain) NSArray *popularMovies;
-@property (nonatomic, retain) NSArray *moviePosters;
+@property (nonatomic, retain) UISearchController *searchBar;
+
 @property (nonatomic, retain) MovieService *service;
+
+@property (nonatomic, retain) NSMutableArray *popularMovies;
+@property (nonatomic, retain) NSMutableArray *nowPlayingMovies;
+@property (nonatomic, retain) NSMutableArray *filteredPopularMovies;
+@property (nonatomic, retain) NSMutableArray *filteredNowPlayingMovies;
+@property (nonatomic, retain) NSMutableArray *moviePosters;
 
 @end
 
@@ -26,27 +31,32 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    //MARK: Configuring SearchBar/SearchController
+    self.searchBar = [[UISearchController alloc] init];
     
+    [self.navigationItem setSearchController:self.searchBar];
+    [self.searchBar setSearchResultsUpdater:self];
+    [self.searchBar setObscuresBackgroundDuringPresentation:NO];
+    
+    //Configuring tableView
+    [self.tableView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     
+    //Allocating model arrays
     self.service = [[MovieService alloc] init];
-    self.nowPlayingMovies = [[NSArray alloc] init];
-    self.popularMovies = [[NSArray alloc] init];
-    self.moviePosters = [[NSArray alloc] init];
+    self.nowPlayingMovies = [[NSMutableArray alloc] init];
+    self.popularMovies = [[NSMutableArray alloc] init];
+    self.filteredNowPlayingMovies = [[NSMutableArray alloc] init];
+    self.filteredPopularMovies = [[NSMutableArray alloc] init];
+    self.moviePosters = [[NSMutableArray alloc] init];
     
-    [self.service performAsyncMoviesDownloadWithType: @"now_playing" completionBlock:^(BOOL success, NSMutableArray *movies) {
-        if (success) {
-            self.nowPlayingMovies = movies;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
-        }
-    }];
-    
+    //fetching movies/popular
     [self.service performAsyncMoviesDownloadWithType: @"popular" completionBlock:^(BOOL success, NSMutableArray *movies) {
         if (success) {
             self.popularMovies = movies;
+            self.filteredPopularMovies = movies;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
@@ -54,6 +64,17 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
         }
     }];
     
+    //fetching movies/now_playing
+    [self.service performAsyncMoviesDownloadWithType: @"now_playing" completionBlock:^(BOOL success, NSMutableArray *movies) {
+        if (success) {
+            self.nowPlayingMovies = movies;
+            self.filteredNowPlayingMovies = movies;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        }
+    }];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -104,10 +125,14 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-        return [_popularMovies count];
+    if (self.filteredPopularMovies.count > 0 && section == 0) {
+        return [self.filteredPopularMovies count];
     }
-    return [_nowPlayingMovies count];
+    if (section == 1) {
+        return [self.filteredNowPlayingMovies count];
+    }
+    
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -136,5 +161,34 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
     
     return cell;
 }
+
+//MARK: - SearchControllerDelegate
+//- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+//    NSString *searchText = [searchController.searchBar text];
+//
+//    if ([searchText length] == 0) {
+//        self.filteredPopularMovies = self.popularMovies;
+//        self.filteredNowPlayingMovies = self.nowPlayingMovies;
+//    }
+//    else {
+//        [self.filteredPopularMovies removeAllObjects];
+//        [self.filteredNowPlayingMovies removeAllObjects];
+//        NSArray *allMovies = [_popularMovies arrayByAddingObject:_nowPlayingMovies];
+//
+//        for (id movie in allMovies) {
+//            if ([[[movie title] lowercaseString] containsString:[searchText lowercaseString]]) {
+//
+//                if ([_popularMovies containsObject:movie] && [_filteredPopularMovies containsObject:movie]) {
+//                    [_filteredPopularMovies arrayByAddingObject:movie];
+//                }
+//
+//                if ([_nowPlayingMovies containsObject:movie] && [_filteredNowPlayingMovies containsObject:movie]) {
+//                    [_filteredNowPlayingMovies arrayByAddingObject:movie];
+//                }
+//            }
+//        }
+//
+//    }
+//}
 
 @end
