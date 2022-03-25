@@ -42,15 +42,14 @@
             movieObject.posterPath = movie[@"poster_path"];
             [movies addObject: movieObject];
         }
+        
         //returning the movies
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (contentDictionary == nil || moviesData == nil || movies.count == 0) {
-                completionBlock(NO, movies);
-            }
-            else {
-                completionBlock(YES, movies);
-            }
-        });
+        if (contentDictionary == nil || moviesData == nil || movies.count == 0) {
+            completionBlock(NO, movies);
+        }
+        else {
+            completionBlock(YES, movies);
+        }
     });
 }
 
@@ -68,14 +67,12 @@
         NSData *imageData = [NSData dataWithContentsOfURL:imagePosterURL];
         UIImage *image = [UIImage imageWithData:imageData];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (image) {
-                completionBlock(YES, image);
-            }
-            else {
-                completionBlock(NO, nil);
-            };
-        });
+        if (image) {
+            completionBlock(YES, image);
+        }
+        else {
+            completionBlock(NO, nil);
+        };
     });
 }
 
