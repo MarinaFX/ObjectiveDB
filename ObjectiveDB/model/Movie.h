@@ -20,6 +20,8 @@
 @property (atomic, retain) NSString *overview;
 @property (atomic, retain) NSNumber *rating;
 @property (atomic, retain) NSString *posterPath;
+@property (atomic, retain) UIImage  *moviePoster;
+
 
 -(instancetype) initWithId: (NSNumber*)ID
             title:(NSString*)title

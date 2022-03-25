@@ -40,7 +40,7 @@
         }
         
         //recebe por segue
-        cell.moviePoster.image = [self.movie imageCover];
+        cell.moviePoster.image = [self.movie moviePoster];
         cell.movieTitle.text = [self.movie title];
         cell.movieDetails.text = [self.movie overview];
         cell.movieRating.text = [[self.movie rating] stringValue];

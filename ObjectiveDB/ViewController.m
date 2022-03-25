@@ -7,39 +7,53 @@
 
 #import "ViewController.h"
 #import "model/Movie.h"
-#import "model/MovieService.h"
+#import "service/MovieService.h"
 #import "Views/MovieTableCell.h"
 #import "MovieDetailViewController.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) NSArray *movies;
+@property (nonatomic, retain) NSArray *nowPlayingMovies;
+@property (nonatomic, retain) NSArray *popularMovies;
+@property (nonatomic, retain) NSArray *moviePosters;
+@property (nonatomic, retain) MovieService *service;
 
 @end
 
 @implementation ViewController
 
+static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     
-    Movie *movie1 = [[Movie alloc] initWithId:@1 title:@"Yondaime Hokage" overview:@"Senpō: Rasengan!" rating:@9.5];
-    [movie1 setImageCover:[UIImage imageNamed:@"default"]];
+    self.service = [[MovieService alloc] init];
+    self.nowPlayingMovies = [[NSArray alloc] init];
+    self.popularMovies = [[NSArray alloc] init];
+    self.moviePosters = [[NSArray alloc] init];
     
-    Movie *movie2 = [[Movie alloc] initWithId:@2 title:@"Nanadaime Hokage" overview:@"Fūton: Rasenshuriken!" rating:@10.0];
-    [movie2 setImageCover:[UIImage imageNamed:@"default3"]];
+    [self.service performAsyncMoviesDownloadWithType: @"now_playing" completionBlock:^(BOOL success, NSMutableArray *movies) {
+        if (success) {
+            self.nowPlayingMovies = movies;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        }
+    }];
     
-    Movie *movie3 = [[Movie alloc] initWithId:@3 title:@"Shodaime Hokage" overview:@"Mokuton: Jokai Kotan" rating:@8.9];
-    [movie3 setImageCover:[UIImage imageNamed:@"default2"]];
+    [self.service performAsyncMoviesDownloadWithType: @"popular" completionBlock:^(BOOL success, NSMutableArray *movies) {
+        if (success) {
+            self.popularMovies = movies;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        }
+    }];
     
-    Movie *movie4 = [[Movie alloc] initWithId:@4 title:@"Godaime Hokage" overview:@"Kuchiyose no Jutsu" rating:@9.2];
-    [movie4 setImageCover:[UIImage imageNamed:@"default4"]];
-
-    
-    _movies = @[movie1, movie2, movie3, movie4];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -49,10 +63,10 @@
         MovieDetailViewController *destination = segue.destinationViewController;
         
         if (indexPath.section == 0) {
-            destination.movie = _movies[indexPath.row];
+            destination.movie = _popularMovies[indexPath.row];
         }
         else {
-            destination.movie = _movies[indexPath.row];
+            destination.movie = _nowPlayingMovies[indexPath.row];
         }
     }
 }
@@ -62,9 +76,38 @@
     [self performSegueWithIdentifier:@"toDetails" sender:indexPath];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *title = @"";
+    
+    if (section == 0) {
+        title = @"Popular";
+    }
+    else {
+        title = @"Now Playing";
+    }
+    
+    UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];
+    [header setBackgroundColor:[UIColor whiteColor]];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 5, self.view.frame.size.width, 22)];
+    [label setFont:[UIFont systemFontOfSize:17 weight:UIFontWeightBold]];
+    [label setText:title];
+    
+    [header addSubview:label];
+    
+    return header;
+}
+
 //MARK: - DataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_movies count];
+    if (section == 0) {
+        return [_popularMovies count];
+    }
+    return [_nowPlayingMovies count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -74,9 +117,19 @@
         cell = (MovieTableCell *)[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MovieTableCell"];        
     }
     
-    Movie *currentMovie = [_movies objectAtIndex:indexPath.row];
+    Movie *currentMovie = indexPath.section == 0 ? _popularMovies[indexPath.row] : _nowPlayingMovies[indexPath.row];
     
-    cell.moviePoster.image = [currentMovie imageCover];
+    NSString *posterURL = [NSString stringWithFormat:@"%@%@", BASE_IMG_URL, [currentMovie posterPath]];
+    
+    [self.service performAsyncImageDownloadWithURL:posterURL completionBlock:^(BOOL success, UIImage *image) {
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [currentMovie setMoviePoster:image];
+            });
+        }
+    }];
+    
+    cell.moviePoster.image = [currentMovie moviePoster];
     cell.movieTitleLabel.text = [currentMovie title];
     cell.movieOverviewLabel.text = [currentMovie overview];
     cell.movieRatingLabel.text = [[currentMovie rating] stringValue];

@@ -22,4 +22,11 @@
     [self.starImage setTintColor:[UIColor systemGrayColor]];
     [self.movieRatingLabel setTextColor:[UIColor systemGrayColor]];
 }
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self setNeedsLayout];
+    
+    [self setNeedsDisplay];
+}
 @end
