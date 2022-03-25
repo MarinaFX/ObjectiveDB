@@ -17,10 +17,10 @@
 
 @property (nonatomic, retain) MovieService *service;
 
-@property (nonatomic, retain) NSMutableArray *popularMovies;
-@property (nonatomic, retain) NSMutableArray *nowPlayingMovies;
-@property (nonatomic, retain) NSMutableArray *filteredPopularMovies;
-@property (nonatomic, retain) NSMutableArray *filteredNowPlayingMovies;
+@property (nonatomic, strong) NSMutableArray *popularMovies;
+@property (nonatomic, strong) NSMutableArray *nowPlayingMovies;
+@property (nonatomic, strong) NSMutableArray *filteredPopularMovies;
+@property (nonatomic, strong) NSMutableArray *filteredNowPlayingMovies;
 @property (nonatomic, retain) NSMutableArray *moviePosters;
 
 @end
@@ -46,8 +46,8 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
     
     //Allocating model arrays
     self.service = [[MovieService alloc] init];
-    self.nowPlayingMovies = [[NSMutableArray alloc] init];
     self.popularMovies = [[NSMutableArray alloc] init];
+    self.nowPlayingMovies = [[NSMutableArray alloc] init];
     self.filteredNowPlayingMovies = [[NSMutableArray alloc] init];
     self.filteredPopularMovies = [[NSMutableArray alloc] init];
     self.moviePosters = [[NSMutableArray alloc] init];
@@ -62,6 +62,9 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
                 [self.tableView reloadData];
             });
         }
+        else {
+            [self.topMostController presentViewController:[self setupAlertWithTitle:@"Error" message:@"There was an error while fetching popular movies"] animated: true completion:nil];
+        }
     }];
     
     //fetching movies/now_playing
@@ -74,6 +77,9 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
                 [self.tableView reloadData];
             });
         }
+        else {
+            [self.topMostController presentViewController:[self setupAlertWithTitle:@"Error" message:@"There was an error while fetching now_playing movies"] animated: true completion:nil];
+        }
     }];
 }
 
@@ -84,12 +90,33 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
         MovieDetailViewController *destination = segue.destinationViewController;
         
         if (indexPath.section == 0) {
-            destination.movie = _popularMovies[indexPath.row];
+            destination.movie = self.popularMovies[indexPath.row];
         }
         else {
-            destination.movie = _nowPlayingMovies[indexPath.row];
+            destination.movie = self.nowPlayingMovies[indexPath.row];
         }
     }
+}
+
+-(UIAlertController *) setupAlertWithTitle: (NSString *) title message:(NSString *) message {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *dismissAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) { }];
+    
+    [alert addAction:dismissAction];
+    
+    return alert;
+}
+
+//MARK: Topview controller to stack up alerts
+- (UIViewController*) topMostController {
+    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+
+    while (topController.presentedViewController) {
+        topController = topController.presentedViewController;
+    }
+
+    return topController;
 }
 
 //MARK: - Delegate
@@ -125,14 +152,18 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.filteredPopularMovies.count > 0 && section == 0) {
+//    if (self.filteredPopularMovies.count > 0 && section == 0) {
+//        return [self.filteredPopularMovies count];
+//    }
+//    if (section == 1) {
+//        return [self.filteredNowPlayingMovies count];
+//    }
+    if (section == 0) {
         return [self.filteredPopularMovies count];
     }
-    if (section == 1) {
+    else {
         return [self.filteredNowPlayingMovies count];
     }
-    
-    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -142,7 +173,7 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
         cell = (MovieTableCell *)[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MovieTableCell"];        
     }
     
-    Movie *currentMovie = indexPath.section == 0 ? _popularMovies[indexPath.row] : _nowPlayingMovies[indexPath.row];
+    Movie *currentMovie = indexPath.section == 0 ? self.filteredPopularMovies[indexPath.row] : self.filteredNowPlayingMovies[indexPath.row];
     
     NSString *posterURL = [NSString stringWithFormat:@"%@%@", BASE_IMG_URL, [currentMovie posterPath]];
     
@@ -150,6 +181,7 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
         if (success) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [currentMovie setMoviePoster:image];
+                [self.tableView reloadData];
             });
         }
     }];
@@ -163,32 +195,41 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
 }
 
 //MARK: - SearchControllerDelegate
-//- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
-//    NSString *searchText = [searchController.searchBar text];
-//
-//    if ([searchText length] == 0) {
-//        self.filteredPopularMovies = self.popularMovies;
-//        self.filteredNowPlayingMovies = self.nowPlayingMovies;
-//    }
-//    else {
-//        [self.filteredPopularMovies removeAllObjects];
-//        [self.filteredNowPlayingMovies removeAllObjects];
-//        NSArray *allMovies = [_popularMovies arrayByAddingObject:_nowPlayingMovies];
-//
-//        for (id movie in allMovies) {
-//            if ([[[movie title] lowercaseString] containsString:[searchText lowercaseString]]) {
-//
-//                if ([_popularMovies containsObject:movie] && [_filteredPopularMovies containsObject:movie]) {
-//                    [_filteredPopularMovies arrayByAddingObject:movie];
-//                }
-//
-//                if ([_nowPlayingMovies containsObject:movie] && [_filteredNowPlayingMovies containsObject:movie]) {
-//                    [_filteredNowPlayingMovies arrayByAddingObject:movie];
-//                }
-//            }
-//        }
-//
-//    }
-//}
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    NSString *searchText = [searchController.searchBar text];
+
+    if ([searchText length] == 0) {
+        self.filteredPopularMovies = [[NSMutableArray alloc] initWithArray:self.popularMovies];
+        
+        self.filteredNowPlayingMovies = [[NSMutableArray alloc] initWithArray:self.nowPlayingMovies];
+    }
+    else {
+        [self.filteredPopularMovies removeAllObjects];
+        [self.filteredNowPlayingMovies removeAllObjects];
+
+        NSArray *allMovies = [self.popularMovies arrayByAddingObjectsFromArray:self.nowPlayingMovies];
+                
+        for (Movie *movie in allMovies) {
+            NSString *movieTitle = [movie title];
+            NSString *loweredCaseTitle = [movieTitle lowercaseString];
+            NSString *loweredCaseSearchText = [searchText lowercaseString];
+            
+            if ([loweredCaseTitle containsString:loweredCaseSearchText]) {
+
+                if ([self.popularMovies containsObject:movie] && ![self.filteredPopularMovies containsObject:movie]) {
+                    [self.filteredPopularMovies addObject:movie];
+                }
+
+                if ([self.nowPlayingMovies containsObject:movie] && ![self.filteredNowPlayingMovies containsObject:movie]) {
+                    [self.filteredNowPlayingMovies addObject:movie];
+                }
+            }
+        }
+
+    }
+    
+    [self.tableView reloadData];
+}
 
 @end

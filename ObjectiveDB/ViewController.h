@@ -9,6 +9,7 @@
 
 @interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating>
 
+- (UIViewController*) topMostController;
 
 @end
 
