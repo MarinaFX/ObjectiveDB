@@ -152,12 +152,6 @@ static NSString *const BASE_IMG_URL = @"https://image.tmdb.org/t/p/w342";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    if (self.filteredPopularMovies.count > 0 && section == 0) {
-//        return [self.filteredPopularMovies count];
-//    }
-//    if (section == 1) {
-//        return [self.filteredNowPlayingMovies count];
-//    }
     if (section == 0) {
         return [self.filteredPopularMovies count];
     }
